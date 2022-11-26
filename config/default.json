@@ -1,0 +1,7 @@
+{
+  "serverPort": 3003,
+  "dbUrl": "mongodb+srv://edward:archer112233@cluster0.6nvy0.mongodb.net/nekoma_DB",
+  "secretKey": "nekoma",
+  "filePath": "C:\\Users\\tim\\Desktop\\mern-cloud-disk\\server\\files",
+  "staticPath": "C:\\Users\\tim\\Desktop\\mern-cloud-disk\\server\\static"
+}
