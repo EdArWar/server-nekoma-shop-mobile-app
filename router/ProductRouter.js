@@ -3,7 +3,6 @@ const ProductController = require("../controller/ProductController.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
 
 const router = new Router();
-console.log("ssss");
 // router.post("/create", authMiddleware, ProductController.createProduct);
 router.get("/", ProductController.getAllProduct);
 router.post("/create", ProductController.createProduct);

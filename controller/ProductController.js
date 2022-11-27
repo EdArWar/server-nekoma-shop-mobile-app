@@ -90,7 +90,7 @@ class ProductRouter {
 
   async getAllProduct(req, res) {
     try {
-      const products = await Product.find();
+      const products = await Product.find().limit(2);
       res.status(200).json({ products });
     } catch (error) {
       console.log(error);

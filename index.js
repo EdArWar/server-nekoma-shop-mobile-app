@@ -4,6 +4,7 @@ const config = require("config");
 const fileUpload = require("express-fileupload");
 const corsMiddleware = require("./middleware/cors.middleware");
 const authRouter = require("./router/AuthRouter");
+const externalAuthRouter = require("./router/ExternalAuthRouter");
 const productRouter = require("./router/ProductRouter");
 
 const cors = require("cors");
@@ -19,6 +20,7 @@ app.use(express.static("static"));
 app.use(express.static("static/avatar"));
 
 app.use("/userAuth", authRouter);
+app.use("/userExternalAuth", externalAuthRouter);
 app.use("/product", productRouter);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
