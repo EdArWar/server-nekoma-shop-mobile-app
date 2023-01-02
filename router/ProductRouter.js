@@ -5,6 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware.js");
 const router = new Router();
 // router.post("/create", authMiddleware, ProductController.createProduct);
 router.get("/", ProductController.getAllProduct);
+router.get("/featuredProduct", ProductController.getFeaturedProduct);
 router.post("/create", ProductController.createProduct);
 router.post("/addCart", ProductController.addCart);
 router.post("/addFavorite", ProductController.addFavorite);
