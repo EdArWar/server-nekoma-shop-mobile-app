@@ -80,7 +80,6 @@ class ProductRouter {
         productTag,
         productImage: info,
       });
-      console.log(product);
       return res.status(200).json({ product });
     } catch (error) {
       console.log(error);
@@ -101,6 +100,25 @@ class ProductRouter {
     try {
       const products = await Product.find({ productTag: "Dress" }).limit(8);
       res.status(200).json({ products });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllProductByTagName(req, res) {
+    try {
+      const total = await Product.find({
+        productTag: req.query.tagName,
+      });
+
+      const products = await Product.find({
+        productTag: req.query.tagName,
+      }).limit(+req.query.pageSize);
+
+      res.status(200).json({
+        data: products,
+        totalItems: total.length,
+        pageSize: +req.query.pageSize,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -155,6 +173,17 @@ class ProductRouter {
       console.log(error);
       res.status(400).json({ msg: `Cart removed error ${error}` });
     }
+  }
+
+  async getAllProductTags(req, res) {
+    try {
+      const products = await Product.find();
+
+      const tags = products.map((item) => item.productTag);
+      const uniqueItems = [...new Set(tags)];
+
+      res.status(200).json({ tags: uniqueItems });
+    } catch (error) {}
   }
 
   async addFavorite(req, res) {
