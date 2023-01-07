@@ -124,6 +124,21 @@ class ProductRouter {
     }
   }
 
+  async getUserCarts(req, res) {
+    try {
+      const user = await User.findOne({ _id: req.query.id });
+      if (!user) {
+        return res.status(400).json({ msg: "User does not exist." });
+      }
+
+      res.status(200).json({
+        userCart: user.products,
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
   async addCart(req, res) {
     try {
       const token = req.body.headers.authorization.split(" ")[1];
@@ -168,7 +183,7 @@ class ProductRouter {
         }
       );
 
-      res.json({ msg: "Added to cart", userCart: product });
+      res.status(200).json({ msg: "Remove to cart", userCart: product });
     } catch (error) {
       console.log(error);
       res.status(400).json({ msg: `Cart removed error ${error}` });

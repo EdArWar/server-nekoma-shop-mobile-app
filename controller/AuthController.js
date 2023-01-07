@@ -138,7 +138,7 @@ class AuthController {
       console.log("auth");
       const user = await User.findOne({ _id: req.user.id });
       const token = jwt.sign({ id: user.id }, config.get("secretKey"), {
-        expiresIn: "1h",
+        expiresIn: "10h",
       });
 
       return res.json({
