@@ -8,7 +8,7 @@ const ExternalUser = new Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String },
   avatar: { type: String },
-  roles: [{ type: String, ref: "Role" }],
+  roles: [{ type: String }],
   externalId: { type: String, unique: true, required: true },
   favorite: {
     type: Array,

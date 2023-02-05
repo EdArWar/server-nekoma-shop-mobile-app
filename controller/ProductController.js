@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Product = require("../models/Product.js");
 const config = require("config");
 const User = require("../models/User.js");
+const ExternalUser = require("../models/ExternalUser.js");
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -140,6 +141,7 @@ class ProductRouter {
   }
 
   async addCart(req, res) {
+    console.log("addCart");
     try {
       const token = req.body.headers.authorization.split(" ")[1];
 
@@ -147,8 +149,11 @@ class ProductRouter {
       const userId = decoded.id;
       const cartId = req.body.cartId;
       const product = await Product.findOne({ _id: cartId });
-      const user = await User.findOne({ _id: userId });
-
+      console.log("req.body.providerId", req.body.providerId);
+      const user = req.body.providerId
+        ? await ExternalUser.findOne({ _id: userId })
+        : await User.findOne({ _id: userId });
+      console.log("user", user);
       if (!user) {
         return res.status(400).json({ msg: "User does not exist." });
       }
@@ -171,7 +176,10 @@ class ProductRouter {
       const userId = decoded.id;
       const cartId = req.body.cartId;
 
-      const user = await User.findOne({ _id: userId });
+      const user = req.body.providerId
+        ? await ExternalUser.findOne({ _id: userId })
+        : await User.findOne({ _id: userId });
+
       const product = await Product.findOne({ _id: cartId });
       if (!user) return res.status(400).json({ msg: "User does not exist." });
       await User.findOneAndUpdate(
@@ -208,7 +216,9 @@ class ProductRouter {
       const userId = decoded.id;
       const cartId = req.body.favoriteId;
       const product = await Product.findOne({ _id: cartId });
-      const user = await User.findOne({ _id: userId });
+      const user = req.body.providerId
+        ? await ExternalUser.findOne({ _id: userId })
+        : await User.findOne({ _id: userId });
 
       if (!user) {
         return res.status(400).json({ msg: "User does not exist." });
@@ -232,7 +242,9 @@ class ProductRouter {
       const userId = decoded.id;
       const cartId = req.body.favoriteId;
 
-      const user = await User.findOne({ _id: userId });
+      const user = req.body.providerId
+        ? await ExternalUser.findOne({ _id: userId })
+        : await User.findOne({ _id: userId });
       const product = await Product.findOne({ _id: cartId });
       if (!user) return res.status(400).json({ msg: "User does not exist." });
       await User.findOneAndUpdate(

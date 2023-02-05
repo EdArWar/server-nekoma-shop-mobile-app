@@ -15,17 +15,16 @@ const app = express();
 
 //socket
 
-const http = require("http");
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+// const http = require("http");
+// const server = http.createServer(app);
+// const { Server } = require("socket.io");
+// const io = new Server(server);
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+// io.on("connection", (socket) => {
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
+// });
 
 app.use(cors());
 app.use(express.json());
@@ -46,7 +45,7 @@ async function startApp() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    server.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`Server is Started on ${PORT} PORT`);
     });
   } catch (e) {

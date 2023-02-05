@@ -99,6 +99,8 @@ class ExternalAuthController {
 
       const candidate = await ExternalUser.findOne({ email });
 
+      console.log("candidate", candidate);
+
       const candidateByExternalId = await ExternalUser.findOne({
         externalId,
       });
