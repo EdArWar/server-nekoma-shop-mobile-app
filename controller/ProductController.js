@@ -158,10 +158,15 @@ class ProductRouter {
         return res.status(400).json({ msg: "User does not exist." });
       }
 
-      await User.findOneAndUpdate(
-        { _id: userId },
-        { $push: { products: product } }
-      );
+      req.body.providerId
+        ? await ExternalUser.findOneAndUpdate(
+            { _id: userId },
+            { $push: { products: product } }
+          )
+        : await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { products: product } }
+          );
 
       res.json({ msg: "Added to cart", userCart: product });
     } catch (error) {
@@ -182,14 +187,23 @@ class ProductRouter {
 
       const product = await Product.findOne({ _id: cartId });
       if (!user) return res.status(400).json({ msg: "User does not exist." });
-      await User.findOneAndUpdate(
-        { _id: userId },
-        {
-          $pull: {
-            products: { _id: product._id },
-          },
-        }
-      );
+      req.body.providerId
+        ? await ExternalUser.findOneAndUpdate(
+            { _id: userId },
+            {
+              $pull: {
+                products: { _id: product._id },
+              },
+            }
+          )
+        : await User.findOneAndUpdate(
+            { _id: userId },
+            {
+              $pull: {
+                products: { _id: product._id },
+              },
+            }
+          );
 
       res.status(200).json({ msg: "Remove to cart", userCart: product });
     } catch (error) {
@@ -224,10 +238,15 @@ class ProductRouter {
         return res.status(400).json({ msg: "User does not exist." });
       }
 
-      await User.findOneAndUpdate(
-        { _id: userId },
-        { $push: { favorite: product } }
-      );
+      req.body.providerId
+        ? await ExternalUser.findOneAndUpdate(
+            { _id: userId },
+            { $push: { favorite: product } }
+          )
+        : await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { favorite: product } }
+          );
 
       res.json({ msg: "Added to cart", favorites: product });
     } catch (error) {
@@ -247,14 +266,23 @@ class ProductRouter {
         : await User.findOne({ _id: userId });
       const product = await Product.findOne({ _id: cartId });
       if (!user) return res.status(400).json({ msg: "User does not exist." });
-      await User.findOneAndUpdate(
-        { _id: userId },
-        {
-          $pull: {
-            favorite: { _id: product._id },
-          },
-        }
-      );
+      req.body.providerId
+        ? await ExternalUser.findOneAndUpdate(
+            { _id: userId },
+            {
+              $pull: {
+                favorite: { _id: product._id },
+              },
+            }
+          )
+        : await User.findOneAndUpdate(
+            { _id: userId },
+            {
+              $pull: {
+                favorite: { _id: product._id },
+              },
+            }
+          );
 
       res.json({ msg: "Added to cart", favorites: product });
     } catch (error) {

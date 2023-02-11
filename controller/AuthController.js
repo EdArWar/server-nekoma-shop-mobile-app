@@ -6,6 +6,7 @@ const User = require("../models/User");
 const Role = require("../models/Role");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const ExternalUser = require("../models/ExternalUser");
 cloudinary.config({
   cloud_name: "mern-archer",
   api_key: "393523673758456",
@@ -92,6 +93,7 @@ class AuthController {
           avatar: user.avatar,
           favorites: user.favorite,
           userCart: user.products,
+          providerId: user.providerId,
         },
       });
     } catch (e) {
@@ -125,6 +127,7 @@ class AuthController {
           avatar: user.avatar,
           favorites: user.favorite,
           userCart: user.products,
+          providerId: user.providerId,
         },
       });
     } catch (e) {
@@ -135,8 +138,14 @@ class AuthController {
 
   async auth(req, res) {
     try {
-      console.log("auth");
-      const user = await User.findOne({ _id: req.user.id });
+      console.log("auth", req.user);
+
+      const user = req.user.providerId
+        ? await ExternalUser.findOne({ _id: req.user.id })
+        : await User.findOne({ _id: req.user.id });
+
+      console.log("user", user);
+
       const token = jwt.sign({ id: user.id }, config.get("secretKey"), {
         expiresIn: "10h",
       });
@@ -151,6 +160,7 @@ class AuthController {
           avatar: user.avatar,
           favorites: user.favorite,
           userCart: user.products,
+          providerId: user.providerId,
         },
       });
     } catch (e) {
