@@ -126,7 +126,6 @@ class ProductRouter {
   }
 
   async getSingleProduct(req, res) {
-    console.log("getSingleProduct");
     try {
       const product = await Product.findOne({ _id: req.body.productId });
       res.status(200).json({ product });
