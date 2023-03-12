@@ -90,7 +90,7 @@ class AuthController {
           userName: user.userName,
           lastName: user.lastName,
           email: user.email,
-          avatar: user.avatar,
+          avatar: user.avatar[0].url,
           favorites: user.favorite,
           userCart: user.products,
           providerId: user.providerId,
@@ -124,7 +124,7 @@ class AuthController {
           userName: user.userName,
           lastName: user.lastName,
           email: user.email,
-          avatar: user.avatar,
+          avatar: user.avatar[0].url,
           favorites: user.favorite,
           userCart: user.products,
           providerId: user.providerId,
@@ -138,31 +138,42 @@ class AuthController {
 
   async auth(req, res) {
     try {
-      console.log("auth", req.user);
-
       const user = req.user.providerId
         ? await ExternalUser.findOne({ _id: req.user.id })
         : await User.findOne({ _id: req.user.id });
-
-      console.log("user", user);
 
       const token = jwt.sign({ id: user.id }, config.get("secretKey"), {
         expiresIn: "10h",
       });
 
-      return res.json({
-        token,
-        user: {
-          id: user.id,
-          userName: user.userName,
-          lastName: user.lastName,
-          email: user.email,
-          avatar: user.avatar,
-          favorites: user.favorite,
-          userCart: user.products,
-          providerId: user.providerId,
-        },
-      });
+      return req.user.providerId
+        ? res.status(200).json({
+            token,
+            user: {
+              id: user.id,
+              providerId: user.providerId,
+              userName: user.firstName,
+              lastName: user.lastName,
+              fullName: user.fullName,
+              email: user.email,
+              avatar: user.avatar,
+              favorites: user.favorite,
+              userCart: user.products,
+            },
+          })
+        : res.json({
+            token,
+            user: {
+              id: user.id,
+              userName: user.userName,
+              lastName: user.lastName,
+              email: user.email,
+              avatar: user.avatar[0].url,
+              favorites: user.favorite,
+              userCart: user.products,
+              providerId: user.providerId,
+            },
+          });
     } catch (e) {
       console.log(e);
     }

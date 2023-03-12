@@ -63,8 +63,6 @@ class ExternalAuthController {
   };
 
   login = async (req, res) => {
-    console.log("login");
-
     const { email } = req.body;
 
     const user = await ExternalUser.findOne({ email });
@@ -99,29 +97,19 @@ class ExternalAuthController {
 
       const candidate = await ExternalUser.findOne({ email });
 
-      console.log("candidate", candidate);
-
       const candidateByExternalId = await ExternalUser.findOne({
         externalId,
       });
 
       if (candidate) {
-        console.log("stex 1");
-
         if (candidate?.id === candidateByExternalId?.id) {
-          console.log("stex 2");
-
           this.login(req, res);
         } else {
-          console.log("stex 3");
-
           return res
             .status(400)
             .json({ ErrorMessage: `User with ${email} already exist` });
         }
       } else {
-        console.log("stex 4");
-
         this.registration(req, res);
       }
     } catch (error) {

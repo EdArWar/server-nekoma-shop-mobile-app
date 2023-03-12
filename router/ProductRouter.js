@@ -10,6 +10,7 @@ router.get("/products", ProductController.getAllProductByTagName);
 router.get("/userCarts", ProductController.getUserCarts);
 router.get("/featuredProduct", ProductController.getFeaturedProduct);
 router.post("/create", ProductController.createProduct);
+router.post("/singleProduct", ProductController.getSingleProduct);
 router.post("/addCart", ProductController.addCart);
 router.post("/addFavorite", ProductController.addFavorite);
 router.post("/removeCart", ProductController.removeCart);

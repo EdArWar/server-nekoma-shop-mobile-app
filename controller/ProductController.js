@@ -125,6 +125,16 @@ class ProductRouter {
     }
   }
 
+  async getSingleProduct(req, res) {
+    console.log("getSingleProduct");
+    try {
+      const product = await Product.findOne({ _id: req.body.productId });
+      res.status(200).json({ product });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getUserCarts(req, res) {
     try {
       const user = await User.findOne({ _id: req.query.id });
@@ -141,7 +151,6 @@ class ProductRouter {
   }
 
   async addCart(req, res) {
-    console.log("addCart");
     try {
       const token = req.body.headers.authorization.split(" ")[1];
 
@@ -149,11 +158,9 @@ class ProductRouter {
       const userId = decoded.id;
       const cartId = req.body.cartId;
       const product = await Product.findOne({ _id: cartId });
-      console.log("req.body.providerId", req.body.providerId);
       const user = req.body.providerId
         ? await ExternalUser.findOne({ _id: userId })
         : await User.findOne({ _id: userId });
-      console.log("user", user);
       if (!user) {
         return res.status(400).json({ msg: "User does not exist." });
       }
