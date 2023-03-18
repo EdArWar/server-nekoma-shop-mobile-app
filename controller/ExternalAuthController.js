@@ -104,10 +104,14 @@ class ExternalAuthController {
       if (candidate) {
         if (candidate?.id === candidateByExternalId?.id) {
           this.login(req, res);
+        } else if (candidate?.id !== candidateByExternalId?.id) {
+          return res
+            .status(400)
+            .json({ message: "This email exists under another service" });
         } else {
           return res
             .status(400)
-            .json({ ErrorMessage: `User with ${email} already exist` });
+            .json({ message: `User with ${email} already exist` });
         }
       } else {
         this.registration(req, res);
