@@ -101,8 +101,6 @@ class ProductRouter {
     try {
       const tegName = req?.query?.tagName;
 
-      console.log("tegName", tegName);
-
       const products = await Product.find({
         productTag: tegName || "Dress",
       }).limit(8);
