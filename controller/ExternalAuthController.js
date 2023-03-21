@@ -46,7 +46,7 @@ class ExternalAuthController {
         token,
         user: {
           id: user.id,
-          providerId: providerId.id,
+          providerId: providerId,
           firstName: user.firstName,
           lastName: user.lastName,
           fullName: user.fullName,
