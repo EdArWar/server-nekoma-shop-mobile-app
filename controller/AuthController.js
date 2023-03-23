@@ -117,6 +117,7 @@ class AuthController {
       }
 
       const token = generateAccessToken(user._id, "USER");
+
       return res.json({
         token,
         user: {
@@ -127,7 +128,7 @@ class AuthController {
           avatar: user.avatar[0].url,
           favorites: user.favorite,
           userCart: user.products,
-          providerId: user.providerId,
+          providerId: null,
         },
       });
     } catch (e) {
@@ -138,6 +139,13 @@ class AuthController {
 
   async auth(req, res) {
     try {
+      if (
+        req.user.providerId === "null" ||
+        req.user.providerId === "undefined"
+      ) {
+        req.user.providerId = null;
+      }
+
       const user = req.user.providerId
         ? await ExternalUser.findOne({ _id: req.user.id })
         : await User.findOne({ _id: req.user.id });
