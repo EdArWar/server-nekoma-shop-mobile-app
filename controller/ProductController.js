@@ -140,7 +140,17 @@ class ProductRouter {
 
   async getUserCarts(req, res) {
     try {
-      const user = await User.findOne({ _id: req.query.id });
+      if (
+        req.user.providerId === "null" ||
+        req.user.providerId === "undefined"
+      ) {
+        req.user.providerId = null;
+      }
+
+      const user = req.user.providerId
+        ? await ExternalUser.findOne({ _id: req.user.id })
+        : await User.findOne({ _id: req.user.id });
+
       if (!user) {
         return res.status(400).json({ msg: "User does not exist." });
       }
