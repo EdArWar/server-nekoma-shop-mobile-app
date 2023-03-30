@@ -138,6 +138,15 @@ class ProductRouter {
     }
   }
 
+  async getSingle(req, res) {
+    try {
+      const product = await Product.findOne({ _id: req.query.id });
+      res.status(200).json({ product });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getUserCarts(req, res) {
     try {
       if (

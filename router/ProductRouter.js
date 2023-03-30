@@ -11,6 +11,7 @@ router.get("/userCarts", authMiddleware, ProductController.getUserCarts);
 router.get("/featuredProduct", ProductController.getFeaturedProduct);
 router.post("/create", ProductController.createProduct);
 router.post("/singleProduct", ProductController.getSingleProduct);
+router.get("/single", ProductController.getSingle);
 router.post("/addCart", ProductController.addCart);
 router.post("/addFavorite", ProductController.addFavorite);
 router.post("/removeCart", ProductController.removeCart);
